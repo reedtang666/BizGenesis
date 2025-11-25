@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![BizGenesis Banner](https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc_gen_image/2386d54145e84ceda6d1a6b81d1d02b1preview.jpeg~tplv-a9rns2rl98-image_pre_watermark_1_6b.png?rcl=202511252311179E05C70ECA83AEEE6A0B&rk3s=8e244e95&rrcfp=827586d3&x-expires=2079443489&x-signature=W9tUdIpb%2F%2BV%2BYkv55gI%2BojAUvNQ%3D) 
+![BizGenesis Banner](banner.png) 
 <!-- 建议后续替换为你用 Midjourney 生成的酷炫 Banner -->
 
 **From Idea to Execution, in Seconds.**  
