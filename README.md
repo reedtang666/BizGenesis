@@ -8,7 +8,7 @@
 **From Idea to Execution, in Seconds.**  
 **让创业从“玄学”变成“工程学”。**
 
-# Slogan： “从想法到首笔收入，用AI加速你的创业之旅。”
+**Slogan： “从想法到首笔收入，用AI加速你的创业之旅。”**
 
 [English](#-english) | [中文](#-中文介绍)
 
