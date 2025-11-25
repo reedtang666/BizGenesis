@@ -1,85 +1,29 @@
-"""
-市场调研智能体
-"""
-
-from typing import Dict, Any
+from langchain.prompts import PromptTemplate
 from src.agents.base import BaseAgent
 
+# 它的任务是把用户模糊的想法（如“袜子”）变成具体的商业机会。
+class MarketResearcher(BaseAgent):
+    def run(self, context: dict) -> dict:
+        industry = context.get("industry")
+        print(f"🕵️  [Market Agent] 正在扫描 {industry} 行业的细分蓝海...")
 
-class MarketResearchAgent(BaseAgent):
-    """
-    市场调研智能体
-    
-    负责：
-    - 市场趋势分析
-    - 竞争对手研究
-    - 目标客户画像
-    - 市场机会识别
-    """
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        初始化市场调研智能体
-        
-        Args:
-            config: 配置字典
-        """
-        super().__init__(config, name="MarketResearchAgent")
-        self.api_key = config.get("openai_api_key") or config.get("anthropic_api_key")
-    
-    def process(self, input_data: Any) -> Dict[str, Any]:
-        """
-        处理市场调研请求
-        
-        Args:
-            input_data: 输入数据（如产品描述、行业信息等）
+        prompt = PromptTemplate(
+            input_variables=["industry"],
+            template="""
+            你是一名拥有10年经验的市场分析师。
+            用户想在【{industry}】领域创业。
+            请分析当前电商和社交媒体趋势，找出 1 个 最具潜力的细分利基市场（Niche）。
             
-        Returns:
-            Dict[str, Any]: 市场调研报告
-        """
-        # TODO: 实现具体的市场调研逻辑
-        print(f"\n{self.name} 正在处理: {input_data}")
+            请按以下格式返回（不要多余废话）：
+            细分领域名称: [名称]
+            目标受众: [人群]
+            痛点分析: [一句话描述]
+            """
+        )
         
-        result = {
-            "status": "success",
-            "agent": self.name,
-            "analysis": {
-                "market_trends": "市场趋势分析结果",
-                "competitors": "竞争对手分析结果",
-                "target_audience": "目标客户画像",
-                "opportunities": "市场机会识别"
-            }
-        }
+        response = self.llm.invoke(prompt.format(industry=industry))
+        result = response.content
         
-        self.add_to_history({
-            "input": input_data,
-            "output": result
-        })
-        
-        return result
-    
-    def analyze_market_trends(self, industry: str) -> Dict[str, Any]:
-        """
-        分析市场趋势
-        
-        Args:
-            industry: 行业名称
-            
-        Returns:
-            Dict[str, Any]: 市场趋势分析
-        """
-        # TODO: 实现市场趋势分析
-        pass
-    
-    def research_competitors(self, product_category: str) -> Dict[str, Any]:
-        """
-        研究竞争对手
-        
-        Args:
-            product_category: 产品类别
-            
-        Returns:
-            Dict[str, Any]: 竞争对手分析
-        """
-        # TODO: 实现竞争对手研究
-        pass
+        # 简单解析返回结果 (在实际生产中可以使用 OutputParser)
+        context["market_analysis"] = result
+        return context

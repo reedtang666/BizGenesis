@@ -1,100 +1,28 @@
-"""
-营销内容智能体
-"""
-
-from typing import Dict, Any, List
+from langchain.prompts import PromptTemplate
 from src.agents.base import BaseAgent
 
+# 这就是“核心”部分，生成赚钱的文案。
+class ContentStrategist(BaseAgent):
+    def run(self, context: dict) -> dict:
+        product_plan = context.get("product_plan")
+        print(f"🎬 [Marketing Agent] 正在撰写吸金短视频脚本...")
 
-class MarketingAgent(BaseAgent):
-    """
-    营销内容智能体
-    
-    负责：
-    - 营销文案生成
-    - 推广策略制定
-    - 内容营销规划
-    - 社交媒体策略
-    """
-    
-    def __init__(self, config: Dict[str, Any]):
-        """
-        初始化营销内容智能体
-        
-        Args:
-            config: 配置字典
-        """
-        super().__init__(config, name="MarketingAgent")
-        self.api_key = config.get("openai_api_key") or config.get("anthropic_api_key")
-    
-    def process(self, input_data: Any) -> Dict[str, Any]:
-        """
-        处理营销策略请求
-        
-        Args:
-            input_data: 输入数据（如产品信息、目标受众等）
+        prompt = PromptTemplate(
+            input_variables=["product_plan"],
+            template="""
+            你是一名带货转化率极高的短视频编剧。
+            基于以下产品方案：
+            {product_plan}
             
-        Returns:
-            Dict[str, Any]: 营销方案
-        """
-        # TODO: 实现具体的营销策略逻辑
-        print(f"\n{self.name} 正在处理: {input_data}")
+            请编写一个【45秒抖音/TikTok带货脚本】。
+            要求：
+            - 0-3秒：必须有视觉或听觉钩子（Hook），让人停下来。
+            - 中段：展示痛点并给出解决方案。
+            - 结尾：强力号召下单（Call to Action）。
+            - 风格：真实、亲切、甚至带点反转。
+            """
+        )
         
-        result = {
-            "status": "success",
-            "agent": self.name,
-            "content": {
-                "copywriting": "营销文案",
-                "strategy": "推广策略",
-                "channels": "推广渠道",
-                "social_media": "社交媒体策略"
-            }
-        }
-        
-        self.add_to_history({
-            "input": input_data,
-            "output": result
-        })
-        
-        return result
-    
-    def generate_copywriting(self, product_info: Dict[str, Any], 
-                            target_audience: str) -> List[str]:
-        """
-        生成营销文案
-        
-        Args:
-            product_info: 产品信息
-            target_audience: 目标受众
-            
-        Returns:
-            List[str]: 营销文案列表
-        """
-        # TODO: 实现文案生成
-        pass
-    
-    def create_strategy(self, market_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        制定推广策略
-        
-        Args:
-            market_data: 市场数据
-            
-        Returns:
-            Dict[str, Any]: 推广策略
-        """
-        # TODO: 实现策略制定
-        pass
-    
-    def plan_social_media(self, brand_info: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        规划社交媒体策略
-        
-        Args:
-            brand_info: 品牌信息
-            
-        Returns:
-            Dict[str, Any]: 社交媒体策略
-        """
-        # TODO: 实现社交媒体规划
-        pass
+        response = self.llm.invoke(prompt.format(product_plan=product_plan))
+        context["marketing_script"] = response.content
+        return context

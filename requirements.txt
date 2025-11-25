@@ -1,13 +1,5 @@
-# AI/LLM Libraries
-openai>=1.0.0
-anthropic>=0.18.0
-
-# Configuration
-python-dotenv>=1.0.0
-
-# Utilities
-requests>=2.31.0
-pydantic>=2.0.0
-
-# Optional: for async support
-aiohttp>=3.9.0
+langchain
+langchain-openai
+python-dotenv
+rich
+pydantic
