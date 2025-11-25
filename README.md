@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![BizGenesis Banner](banner.png) 
+![BizGenesis Banner](BizGenesis.png) 
 <!-- 建议后续替换为你用 Midjourney 生成的酷炫 Banner -->
 
 **From Idea to Execution, in Seconds.**  
