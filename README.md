@@ -2,13 +2,113 @@
 
 让 AI 团队帮你从想法到完整商业方案！
 
+## 📊 系统流程图
+
+```mermaid
+flowchart TB
+    subgraph Input["📥 用户输入"]
+        A[创业想法/关键词]
+    end
+    
+    subgraph AI_Team["🤖 AI 虚拟团队"]
+        B[🕵️ 市场研究员<br/>Market Researcher]
+        C[📦 产品经理<br/>Product Manager]
+        D[🎨 首席设计师<br/>Chief Designer]
+        E[🎬 流量操盘手<br/>Content Strategist]
+        F[🔍 SEO 专家<br/>SEO Expert]
+    end
+    
+    subgraph Tools["🛠️ 工具层"]
+        G[Web 搜索<br/>Serper/DuckDuckGo]
+        H[LLM<br/>GPT-4o-mini]
+    end
+    
+    subgraph Output["📄 输出方案"]
+        I[📊 市场定位分析]
+        J[📦 产品定义方案]
+        K[🎨 品牌设计概念]
+        L[🎬 带货脚本]
+        M[🔍 SEO 关键词]
+    end
+    
+    A --> B
+    B -->|市场趋势搜索| G
+    G --> H
+    H --> B
+    B -->|市场分析结果| C
+    C --> H
+    H --> C
+    C -->|产品方案| D
+    D --> H
+    H --> D
+    D -->|设计方案| E
+    E --> H
+    H --> E
+    E -->|营销脚本| F
+    F --> H
+    H --> F
+    
+    B --> I
+    C --> J
+    D --> K
+    E --> L
+    F --> M
+    
+    style A fill:#e1f5fe
+    style I fill:#c8e6c9
+    style J fill:#c8e6c9
+    style K fill:#c8e6c9
+    style L fill:#c8e6c9
+    style M fill:#c8e6c9
+```
+
+## 🔄 数据流程
+
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant M as 市场研究员
+    participant S as 搜索API
+    participant L as LLM
+    participant P as 产品经理
+    participant D as 设计师
+    participant C as 内容策略
+    participant SE as SEO专家
+    
+    U->>M: 输入创业想法
+    M->>S: 搜索市场趋势
+    S-->>M: 返回搜索结果
+    M->>L: 分析市场数据
+    L-->>M: 市场分析报告
+    M->>P: 传递市场洞察
+    
+    P->>L: 定义产品概念
+    L-->>P: 产品方案
+    P->>D: 传递产品定位
+    
+    D->>L: 生成品牌设计
+    L-->>D: Logo概念 + Midjourney提示词
+    D->>C: 传递品牌调性
+    
+    C->>L: 创作营销内容
+    L-->>C: TikTok/抖音脚本
+    C->>SE: 传递内容关键词
+    
+    SE->>L: 提取SEO关键词
+    L-->>SE: 长尾词 + Hashtag
+    
+    SE-->>U: 完整商业方案
+```
+
 ## ✨ 功能
 
-- 🕵️ **市场研究** - 分析市场趋势，找到细分利基
-- 📦 **产品定义** - 打造差异化产品概念
-- 🎨 **品牌设计** - 生成 Logo 概念和 Midjourney Prompt
-- 🎬 **流量脚本** - 写 TikTok/抖音爆款带货脚本
-- 🔍 **SEO 策略** - 挖掘高转化长尾关键词
+| Agent | 角色 | 输出 |
+|-------|------|------|
+| 🕵️ 市场研究员 | 分析市场趋势，找到细分利基 | 市场定位分析 |
+| 📦 产品经理 | 打造差异化产品概念 | 产品定义方案 |
+| 🎨 首席设计师 | 生成 Logo 概念 | 品牌设计 + Midjourney Prompt |
+| 🎬 流量操盘手 | 写爆款带货脚本 | TikTok/抖音脚本 |
+| 🔍 SEO 专家 | 挖掘高转化关键词 | 长尾词 + Hashtag |
 
 ## 🛠️ 快速开始
 
@@ -64,7 +164,8 @@ BizGenesis/
 │       └── app.py
 ├── requirements.txt
 ├── Dockerfile
-└── docker-compose.yml
+├── docker-compose.yml
+└── README.md
 ```
 
 ## 🔑 环境变量
