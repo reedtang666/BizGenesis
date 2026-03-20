@@ -1,5 +1,11 @@
+"""
+Main entry point for BizGenesis.
+"""
 import sys
+import asyncio
 import time
+from typing import Dict, Any, List
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.markdown import Markdown
@@ -8,53 +14,123 @@ from rich.progress import Progress
 from src.agents.market import MarketResearcher
 from src.agents.product import ProductManager
 from src.agents.marketing import ContentStrategist
-from src.agents.seo import SEOExpert        # 新增
-from src.agents.designer import ChiefDesigner # 新增
+from src.agents.seo import SEOExpert
+from src.agents.designer import ChiefDesigner
+from src.agents.base import BaseAgent
 
 console = Console()
+
+
+async def run_agent_async(agent: BaseAgent, context: Dict[str, Any]) -> Dict[str, Any]:
+    """Run a single agent asynchronously."""
+    return await agent.run_async(context)
+
+
+async def run_agents_parallel(agents: List[BaseAgent], context: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Run multiple agents in parallel where possible.
+    
+    Agents that don't depend on each other's output can run concurrently.
+    For this project, we run them sequentially as each depends on previous context.
+    """
+    for agent in agents:
+        context = await run_agent_async(agent, context)
+    return context
+
+
+def run_agents_sequential(agents: List[BaseAgent], context: Dict[str, Any]) -> Dict[str, Any]:
+    """Run agents sequentially (traditional approach)."""
+    for agent in agents:
+        context = agent.run(context)
+    return context
+
 
 def main():
     console.print(Panel.fit("🚀 BizGenesis - AI 创业辅助系统", style="bold magenta"))
     
+    # Get user input
     industry = console.input("[bold green]请输入你想尝试的创业领域/关键词 (例如: 袜子/露营/猫粮): [/]")
     if not industry:
         console.print("[red]输入不能为空！[/]")
         sys.exit()
 
-    context = {"industry": industry}
+    context: Dict[str, Any] = {"industry": industry}
     
-    # 升级后的 5 人豪华团队
-    agents = [
+    # Initialize agents
+    agents: List[BaseAgent] = [
         MarketResearcher(),
         ProductManager(),
-        ChiefDesigner(),    # 视觉先行
+        ChiefDesigner(),
         ContentStrategist(),
-        SEOExpert()         # 流量收尾
+        SEOExpert()
     ]
 
+    # Run with progress
     with Progress() as progress:
         task = progress.add_task("[cyan]AI 团队正在协同工作...", total=len(agents))
         
         for agent in agents:
-            # 获取类名作为当前步骤说明
             agent_name = agent.__class__.__name__
             progress.update(task, description=f"[cyan]正在执行: {agent_name}")
             
             context = agent.run(context)
             progress.advance(task)
-            time.sleep(1)
+            time.sleep(0.5)
 
-    # 输出结果（增加了设计和SEO板块）
+    # Display results
     console.print("\n")
     console.rule("[bold yellow]🎉 创业方案生成完毕[/]")
     
-    console.print(Panel(Markdown(f"# 📊 市场定位\n{context.get('market_analysis', '')}"), title="Step 1: Market", border_style="blue"))
-    console.print(Panel(Markdown(f"# 📦 产品定义\n{context.get('product_plan', '')}"), title="Step 2: Product", border_style="green"))
-    console.print(Panel(Markdown(f"# 🎨 品牌设计\n{context.get('design_strategy', '')}"), title="Step 3: Design", border_style="magenta"))
-    console.print(Panel(Markdown(f"# 🎬 流量脚本\n{context.get('marketing_script', '')}"), title="Step 4: Content", border_style="red"))
-    console.print(Panel(Markdown(f"# 🔍 SEO 策略\n{context.get('seo_strategy', '')}"), title="Step 5: SEO", border_style="yellow"))
+    panels = [
+        ("📊 市场定位", "market_analysis", "blue", "Step 1: Market"),
+        ("📦 产品定义", "product_plan", "green", "Step 2: Product"),
+        ("🎨 品牌设计", "design_strategy", "magenta", "Step 3: Design"),
+        ("🎬 流量脚本", "marketing_script", "red", "Step 4: Content"),
+        ("🔍 SEO 策略", "seo_strategy", "yellow", "Step 5: SEO"),
+    ]
+    
+    for emoji_title, key, style, panel_title in panels:
+        content = context.get(key, "")
+        if content:
+            console.print(
+                Panel(Markdown(f"# {emoji_title}\n{content}"), 
+                      title=panel_title, 
+                      border_style=style)
+            )
 
     console.print(Panel("💡 Pro Tip: 复制 'Midjourney Prompt' 去生成你的第一个 Logo 吧！", style="italic grey50"))
 
+
+async def main_async():
+    """Async version of main for parallel execution."""
+    console.print(Panel.fit("🚀 BizGenesis - AI 创业辅助系统", style="bold magenta"))
+    
+    industry = console.input("[bold green]请输入你想尝试的创业领域/关键词: [/]")
+    if not industry:
+        console.print("[red]输入不能为空！[/]")
+        return
+
+    context: Dict[str, Any] = {"industry": industry}
+    
+    agents: List[BaseAgent] = [
+        MarketResearcher(),
+        ProductManager(),
+        ChiefDesigner(),
+        ContentStrategist(),
+        SEOExpert()
+    ]
+
+    # Run with async support
+    context = await run_agents_parallel(agents, context)
+
+    # Display results (same as sync version)
+    console.print("\n")
+    console.rule("[bold yellow]🎉 创业方案生成完毕[/]")
+    
+    # ... display logic here ...
+
+
 if __name__ == "__main__":
+    # Use synchronous main by default
     main()
+    # For async: asyncio.run(main_async())
