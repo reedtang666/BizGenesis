@@ -1,14 +1,9 @@
-"""
-Base agent class with logging, retry, and memory support.
-"""
+"""Base agent class with logging and retry support."""
 import time
-import asyncio
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Dict, Any, List
 
 from langchain_openai import ChatOpenAI
-from langchain.memory import ConversationBufferMemory
-from langchain.schema import HumanMessage, AIMessage
 from loguru import logger
 from tenacity import (
     retry,
@@ -31,32 +26,21 @@ class LLMError(AgentError):
 
 
 class BaseAgent(ABC):
-    """
-    Base class for all agents with logging, retry, and memory support.
-    """
+    """Base class for all agents with logging and retry support."""
     
     def __init__(self, use_memory: bool = False):
-        """
-        Initialize the agent.
+        # Get LLM config from provider
+        llm_config = Config.get_llm_config()
         
-        Args:
-            use_memory: Whether to use conversation memory
-        """
         self.llm = ChatOpenAI(
             temperature=0.7,
-            model_name=Config.MODEL_NAME,
-            openai_api_key=Config.OPENAI_API_KEY
+            model=llm_config["model"],
+            api_key=llm_config["api_key"],
+            base_url=llm_config["base_url"]
         )
         self._use_memory = use_memory
-        self._memory: Optional[ConversationBufferMemory] = None
         self._conversation_history: List[Dict[str, str]] = []
         self._setup_logger()
-        
-        if use_memory:
-            self._memory = ConversationBufferMemory(
-                return_messages=True,
-                memory_key="chat_history"
-            )
 
     def _setup_logger(self) -> None:
         """Configure logger for this agent."""
@@ -74,23 +58,15 @@ class BaseAgent(ABC):
             "human": human_input,
             "ai": ai_output
         })
-        
-        if self._memory:
-            self._memory.save_context(
-                {"input": human_input},
-                {"output": ai_output}
-            )
 
     def get_memory_context(self) -> str:
         """Get conversation history as context string."""
         if not self._conversation_history:
             return ""
-        
         context_parts = []
-        for turn in self._conversation_history[-3:]:  # Last 3 turns
+        for turn in self._conversation_history[-3:]:
             context_parts.append(f"Human: {turn['human']}")
             context_parts.append(f"AI: {turn['ai']}")
-        
         return "\n".join(context_parts)
 
     @retry(
@@ -102,20 +78,11 @@ class BaseAgent(ABC):
         ),
     )
     def _call_llm(self, prompt: str) -> str:
-        """
-        Call LLM with retry logic.
-        
-        Args:
-            prompt: The prompt to send to the LLM
-            
-        Returns:
-            The LLM response content
-        """
+        """Call LLM with retry logic."""
         start_time = time.time()
         try:
             logger.info(f"{self.name} calling LLM...")
             
-            # Add memory context if available
             memory_context = self.get_memory_context()
             if memory_context:
                 prompt = f"Previous context:\n{memory_context}\n\nCurrent request:\n{prompt}"
@@ -123,51 +90,13 @@ class BaseAgent(ABC):
             response = self.llm.invoke(prompt)
             elapsed = time.time() - start_time
             logger.info(f"{self.name} completed in {elapsed:.2f}s")
-            
             return response.content
         except Exception as e:
             elapsed = time.time() - start_time
             logger.error(f"{self.name} failed after {elapsed:.2f}s: {e}")
             raise LLMError(f"LLM call failed: {e}") from e
 
-    async def _call_llm_async(self, prompt: str) -> str:
-        """
-        Async version of LLM call.
-        
-        Args:
-            prompt: The prompt to send to the LLM
-            
-        Returns:
-            The LLM response content
-        """
-        # Run synchronous call in executor
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, self._call_llm, prompt)
-
     @abstractmethod
     def run(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Execute agent task with context.
-        Must be implemented by subclasses.
-        
-        Args:
-            context: Shared context dictionary
-            
-        Returns:
-            Updated context dictionary
-        """
+        """Execute agent task with context."""
         pass
-
-    async def run_async(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Async version of run.
-        Default implementation wraps synchronous run.
-        
-        Args:
-            context: Shared context dictionary
-            
-        Returns:
-            Updated context dictionary
-        """
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, self.run, context)

@@ -1,25 +1,36 @@
-from langchain.prompts import PromptTemplate
+"""Product Manager Agent."""
+from loguru import logger
 from src.agents.base import BaseAgent
 
-# 它的任务是定义产品卖点。
-class ProductManager(BaseAgent):
-    def run(self, context: dict) -> dict:
-        market_data = context.get("market_analysis")
-        print(f"📦 [Product Agent] 正在规划产品形态...")
 
-        prompt = PromptTemplate(
-            input_variables=["market_data"],
-            template="""
-            根据以下市场分析：
-            {market_data}
-            
-            请定义一款爆款产品。请提供：
-            1. 产品名称（要有吸引力）
-            2. 核心卖点（USP，列出3点）
-            3. 给设计师的包装设计提示词（用于生成图片）
-            """
-        )
+class ProductManager(BaseAgent):
+    """Product manager agent."""
+    
+    @property
+    def name(self) -> str:
+        return "Product Manager"
+    
+    def run(self, context: dict) -> dict:
+        market = context.get("market_analysis", "")
+        industry = context.get("industry", "")
+        logger.info(f"Defining product for {industry}...")
         
-        response = self.llm.invoke(prompt.format(market_data=market_data))
-        context["product_plan"] = response.content
+        prompt = f"""
+你是一名资深产品经理。基于以下市场分析:
+
+{market}
+
+请为这个【{industry}】创业项目定义一个差异化的产品概念。
+
+请按以下格式返回:
+产品名称: [有创意的名字]
+核心卖点: [USP - 独特卖点]
+差异化优势: [与竞品不同的地方]
+目标用户: [具体用户画像]
+定价策略: [建议定价]
+"""
+        
+        response = self._call_llm(prompt)
+        context["product_plan"] = response
+        logger.info("Product plan complete")
         return context
