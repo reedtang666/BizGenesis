@@ -3,3 +3,6 @@ langchain-openai
 python-dotenv
 rich
 pydantic
+loguru>=0.7.0
+tenacity>=8.2.0
+tiktoken>=0.5.0
