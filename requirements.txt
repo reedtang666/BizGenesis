@@ -13,3 +13,6 @@ tiktoken>=0.5.0
 # Search API
 requests>=2.31.0
 duckduckgo-search>=4.0.0
+
+# Web UI
+streamlit>=1.30.0
