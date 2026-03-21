@@ -20,6 +20,8 @@ from src.agents.seo import SEOExpert
 from src.agents.designer import ChiefDesigner
 from src.agents.base import BaseAgent
 from src.agents.business import BusinessModeler
+from src.agents.finance import FinancePlanner
+from src.agents.risk import RiskAnalyst
 
 console = Console()
 
@@ -85,6 +87,18 @@ def save_to_markdown(context: Dict[str, Any], industry: str) -> Path:
 
 ---
 
+## 📈 财务规划
+
+{context.get('finance_plan', '暂无')}
+
+---
+
+## ⚠️ 风险评估
+
+{context.get('risk_analysis', '暂无')}
+
+---
+
 ## 🎨 品牌设计
 
 {context.get('design_strategy', '暂无')}
@@ -126,6 +140,8 @@ def main():
         MarketResearcher(),
         ProductManager(),
         BusinessModeler(),
+        FinancePlanner(),
+        RiskAnalyst(),
         ChiefDesigner(),
         ContentStrategist(),
         SEOExpert()
@@ -151,9 +167,11 @@ def main():
         ("📊 市场定位", "market_analysis", "blue", "Step 1: Market"),
         ("📦 产品定义", "product_plan", "green", "Step 2: Product"),
         ("💰 商业模式", "business_model", "cyan", "Step 3: Business"),
-        ("🎨 品牌设计", "design_strategy", "magenta", "Step 4: Design"),
-        ("🎬 流量脚本", "marketing_script", "red", "Step 5: Content"),
-        ("🔍 SEO 策略", "seo_strategy", "yellow", "Step 6: SEO"),
+        ("📈 财务规划", "finance_plan", "cyan", "Step 4: Finance"),
+        ("⚠️ 风险评估", "risk_analysis", "red", "Step 5: Risk"),
+        ("🎨 品牌设计", "design_strategy", "magenta", "Step 6: Design"),
+        ("🎬 流量脚本", "marketing_script", "red", "Step 7: Content"),
+        ("🔍 SEO 策略", "seo_strategy", "yellow", "Step 8: SEO"),
     ]
     
     for emoji_title, key, style, panel_title in panels:
@@ -187,6 +205,8 @@ async def main_async():
         MarketResearcher(),
         ProductManager(),
         BusinessModeler(),
+        FinancePlanner(),
+        RiskAnalyst(),
         ChiefDesigner(),
         ContentStrategist(),
         SEOExpert()
