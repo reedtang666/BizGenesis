@@ -19,6 +19,7 @@ from src.agents.marketing import ContentStrategist
 from src.agents.seo import SEOExpert
 from src.agents.designer import ChiefDesigner
 from src.agents.base import BaseAgent
+from src.agents.business import BusinessModeler
 
 console = Console()
 
@@ -78,6 +79,12 @@ def save_to_markdown(context: Dict[str, Any], industry: str) -> Path:
 
 ---
 
+## 💰 商业模式
+
+{context.get('business_model', '暂无')}
+
+---
+
 ## 🎨 品牌设计
 
 {context.get('design_strategy', '暂无')}
@@ -118,6 +125,7 @@ def main():
     agents: List[BaseAgent] = [
         MarketResearcher(),
         ProductManager(),
+        BusinessModeler(),
         ChiefDesigner(),
         ContentStrategist(),
         SEOExpert()
@@ -142,9 +150,10 @@ def main():
     panels = [
         ("📊 市场定位", "market_analysis", "blue", "Step 1: Market"),
         ("📦 产品定义", "product_plan", "green", "Step 2: Product"),
-        ("🎨 品牌设计", "design_strategy", "magenta", "Step 3: Design"),
-        ("🎬 流量脚本", "marketing_script", "red", "Step 4: Content"),
-        ("🔍 SEO 策略", "seo_strategy", "yellow", "Step 5: SEO"),
+        ("💰 商业模式", "business_model", "cyan", "Step 3: Business"),
+        ("🎨 品牌设计", "design_strategy", "magenta", "Step 4: Design"),
+        ("🎬 流量脚本", "marketing_script", "red", "Step 5: Content"),
+        ("🔍 SEO 策略", "seo_strategy", "yellow", "Step 6: SEO"),
     ]
     
     for emoji_title, key, style, panel_title in panels:
@@ -177,6 +186,7 @@ async def main_async():
     agents: List[BaseAgent] = [
         MarketResearcher(),
         ProductManager(),
+        BusinessModeler(),
         ChiefDesigner(),
         ContentStrategist(),
         SEOExpert()

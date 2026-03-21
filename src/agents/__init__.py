@@ -5,12 +5,14 @@ from src.agents.product import ProductManager
 from src.agents.marketing import ContentStrategist
 from src.agents.seo import SEOExpert
 from src.agents.designer import ChiefDesigner
+from src.agents.business import BusinessModeler
 
 __all__ = [
     "BaseAgent",
-    "MarketResearcher", 
+    "MarketResearcher",
     "ProductManager",
+    "BusinessModeler",
+    "ChiefDesigner",
     "ContentStrategist",
-    "SEOExpert",
-    "ChiefDesigner"
+    "SEOExpert"
 ]
