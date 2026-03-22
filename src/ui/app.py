@@ -3,6 +3,10 @@ Streamlit Web UI for BizGenesis.
 Run with: streamlit run src/ui/app.py
 """
 import streamlit as st
+import sys
+from pathlib import Path
+# Add project root to Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from typing import Dict, Any
 
 from src.agents.market import MarketResearcher
@@ -10,6 +14,9 @@ from src.agents.product import ProductManager
 from src.agents.marketing import ContentStrategist
 from src.agents.seo import SEOExpert
 from src.agents.designer import ChiefDesigner
+from src.agents.business import BusinessModeler
+from src.agents.finance import FinancePlanner
+from src.agents.risk import RiskAnalyst
 from src.config import Config
 
 
@@ -40,7 +47,8 @@ def main():
     # Sidebar
     with st.sidebar:
         st.header("⚙️ 设置")
-        st.markdown(f"**模型**: {Config.MODEL_NAME}")
+        llm_config = Config.get_llm_config()
+        st.markdown(f"**模型**: {llm_config['model']}")
         
         if Config.has_search_api():
             st.success("✅ 搜索 API 已配置")
@@ -83,6 +91,9 @@ def main():
         agents = [
             ("🕵️ 市场研究", MarketResearcher(), "market_analysis"),
             ("📦 产品定义", ProductManager(), "product_plan"),
+            ("💰 商业模式", BusinessModeler(), "business_model"),
+            ("📈 财务规划", FinancePlanner(), "finance_plan"),
+            ("⚠️ 风险评估", RiskAnalyst(), "risk_analysis"),
             ("🎨 品牌设计", ChiefDesigner(), "design_strategy"),
             ("🎬 流量脚本", ContentStrategist(), "marketing_script"),
             ("🔍 SEO 策略", SEOExpert(), "seo_strategy"),
@@ -109,7 +120,10 @@ def main():
         
         tabs = st.tabs([
             "🕵️ 市场研究",
-            "📦 产品定义", 
+            "📦 产品定义",
+            "💰 商业模式",
+            "📈 财务规划",
+            "⚠️ 风险评估",
             "🎨 品牌设计",
             "🎬 流量脚本",
             "🔍 SEO 策略"
@@ -118,6 +132,9 @@ def main():
         tab_keys = [
             "market_analysis",
             "product_plan",
+            "business_model",
+            "finance_plan",
+            "risk_analysis",
             "design_strategy",
             "marketing_script",
             "seo_strategy"
