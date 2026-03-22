@@ -13,6 +13,9 @@ BizGenesis is an AI-powered startup assistant that transforms your business idea
 
 - 🕵️ **Market Research** - Analyze trends, identify niche opportunities
 - 📦 **Product Definition** - Create differentiated product concepts
+- 💰 **Business Model** - Design monetization strategy and pricing
+- 📈 **Finance Planning** - Startup budget and cash flow forecast
+- ⚠️ **Risk Analysis** - Identify threats and mitigation strategies
 - 🎨 **Brand Design** - Generate logo concepts & Midjourney prompts
 - 🎬 **Content Strategy** - Write viral TikTok/Douyin scripts
 - 🔍 **SEO Strategy** - Extract high-conversion keywords
@@ -23,10 +26,13 @@ BizGenesis is an AI-powered startup assistant that transforms your business idea
 flowchart LR
     A[Input: Idea] --> B[Market Researcher]
     B --> C[Product Manager]
-    C --> D[Chief Designer]
-    D --> E[Content Strategist]
-    E --> F[SEO Expert]
-    F --> G[Output: Business Plan]
+    C --> D[Business Modeler]
+    D --> E[Finance Planner]
+    E --> F[Risk Analyst]
+    F --> G[Chief Designer]
+    G --> H[Content Strategist]
+    H --> I[SEO Expert]
+    I --> J[Output: Business Plan]
 ```
 
 ### 🛠️ Quick Start
@@ -83,6 +89,9 @@ BizGenesis 是一个 AI 创业辅助系统，让你的创业想法变成完整�
 
 - 🕵️ **市场研究员** - 分析市场趋势，找到细分利基
 - 📦 **产品经理** - 打造差异化产品概念
+- 💰 **商业模式** - 设计变现策略和定价方案
+- 📈 **财务规划** - 启动资金预算和现金流预测
+- ⚠️ **风险评估** - 识别威胁和应对策略
 - 🎨 **首席设计师** - 生成 Logo 概念和 Midjourney Prompt
 - 🎬 **流量操盘手** - 写 TikTok/抖音爆款带货脚本
 - 🔍 **SEO 专家** - 挖掘高转化长尾关键词
@@ -98,25 +107,34 @@ flowchart TB
     subgraph AI_Team["🤖 AI 虚拟团队"]
         B[🕵️ 市场研究员]
         C[📦 产品经理]
-        D[🎨 首席设计师]
-        E[🎬 流量操盘手]
-        F[🔍 SEO 专家]
+        D[💰 商业模式]
+        E[📈 财务规划]
+        F[⚠️ 风险评估]
+        G[🎨 首席设计师]
+        H[🎬 流量操盘手]
+        I[🔍 SEO 专家]
     end
     
     subgraph Output["📄 输出方案"]
-        G[📊 市场定位]
-        H[📦 产品方案]
-        I[🎨 品牌设计]
-        J[🎬 营销脚本]
-        K[🔍 SEO策略]
+        J[📊 市场定位]
+        K[📦 产品方案]
+        L[💰 商业模式]
+        M[📈 财务规划]
+        N[⚠️ 风险评估]
+        O[🎨 品牌设计]
+        P[🎬 营销脚本]
+        Q[🔍 SEO策略]
     end
     
-    A --> B --> C --> D --> E --> F
-    B --> G
-    C --> H
-    D --> I
-    E --> J
-    F --> K
+    A --> B --> C --> D --> E --> F --> G --> H --> I
+    B --> J
+    C --> K
+    D --> L
+    E --> M
+    F --> N
+    G --> O
+    H --> P
+    I --> Q
 ```
 
 ### 🛠️ 快速开始
@@ -174,6 +192,9 @@ BizGenesis/
 │   │   ├── base.py      # 基类
 │   │   ├── market.py    # 市场研究员
 │   │   ├── product.py   # 产品经理
+│   │   ├── business.py  # 商业模式
+│   │   ├── finance.py   # 财务规划
+│   │   ├── risk.py      # 风险评估
 │   │   ├── designer.py  # 首席设计
 │   │   ├── marketing.py # 流量操盘手
 │   │   └── seo.py       # SEO 专家
@@ -182,6 +203,7 @@ BizGenesis/
 │   │   └── calculator.py
 │   └── ui/              # Web UI
 │       └── app.py
+├── output/              # 生成的方案文件
 ├── requirements.txt
 ├── Dockerfile
 └── docker-compose.yml
