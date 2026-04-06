@@ -16,3 +16,6 @@ duckduckgo-search>=4.0.0
 
 # Web UI
 streamlit>=1.30.0
+
+# PDF Export
+reportlab>=4.0.0
