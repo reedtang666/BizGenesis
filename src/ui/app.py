@@ -548,7 +548,7 @@ def format_report_content(content: str) -> str:
     for line in lines:
         score_match = score_pattern.match(line)
         if score_match:
-            score_val = score_match.group(1).strip()
+            score_val = score_match.group(1).strip().strip("*").strip()
             formatted_lines.append(
                 f'<div class="exec-score-banner">🎯 赛道推荐指数 // {score_val}</div>'
             )

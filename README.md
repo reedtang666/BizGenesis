@@ -1,381 +1,290 @@
-# 🚀 BizGenesis - AI Startup Assistant | AI 创业辅助系统
+<div align="center">
 
-[English](#english) | [中文](#中文)
+# 🚀 BizGenesis · AI 商业决策矩阵
+
+**Autonomous Venture Intelligence OS // 多智能体协同商业推演与创业辅助系统**
+
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit UI](https://img.shields.io/badge/Streamlit-Cyber_HUD_v2.5-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Multi-LLM](https://img.shields.io/badge/LLM-Gemini_%7C_OpenAI_%7C_DeepSeek_%7C_Qwen_%7C_GLM-00F5D4?style=for-the-badge)](https://github.com/reedtang666/BizGenesis)
+[![Tests](https://img.shields.io/badge/Tests-135%2B_Passed-10B981?style=for-the-badge&logo=pytest&logoColor=white)](./tests)
+[![License: MIT](https://img.shields.io/badge/License-MIT-6366F1?style=for-the-badge)](./LICENSE)
+
+[**🇨🇳 中文文档**](#中文文档) &nbsp;｜&nbsp; [**📸 系统截图**](#-系统界面预览-screenshots) &nbsp;｜&nbsp; [**🕸️ 5-Stage DAG 拓扑**](#️-5-阶段-dag-并行推演架构) &nbsp;｜&nbsp; [**🛠️ 快速开始**](#️-快速开始) &nbsp;｜&nbsp; [**🇺🇸 English**](#english-documentation)
+
+<br/>
+
+<img src="./BizGenesis.png" alt="BizGenesis Banner" width="92%" style="border-radius: 14px; box-shadow: 0 12px 36px rgba(0,0,0,0.35);" />
+
+*“让创业从玄学变工程学” —— 从赛道洞察、产品建模、财务精算到全域获客的一站式 AI 商业计划引擎*
+
+</div>
 
 ---
 
-<a name="english"></a>
-## English
+<a name="中文文档"></a>
 
-### 📖 Overview
+## 📖 项目简介
 
-BizGenesis is an AI-powered startup assistant that transforms your business idea into a complete business plan. Our virtual AI team collaborates to deliver professional business analysis with real-time cost tracking, parallel execution, and beautiful export options.
+**BizGenesis** 是一套面向创业者、产品经理与投资分析人员的 **多智能体协同商业推演系统（Multi-Agent Venture Intelligence OS）**。只需输入一个创业赛道、新消费单品或 AI 商业概念，系统即可调度 **8 位专业职能 AI Agent**，结合实时市场检索与商业要素约束（启动资金、目标市场、团队形态），通过 **5 阶段有向无环图（DAG）并行引擎** 自动推演并输出路演级商业计划书。
 
-### ✨ Features
+### 🌟 核心架构升级 (V2.5)
 
-**Core AI Team (8 Agents):**
-- 🕵️ **Market Research** - Analyze trends with real competitor data
-- 📦 **Product Definition** - Create differentiated product concepts
-- 💰 **Business Model** - Design monetization strategy and pricing
-- 📈 **Finance Planning** - Startup budget and cash flow forecast
-- ⚠️ **Risk Analysis** - Identify threats and mitigation strategies
-- 🎨 **Brand Design** - Generate logo concepts & Midjourney prompts
-- 🎬 **Content Strategy** - Write viral TikTok/Douyin scripts
-- 🔍 **SEO Strategy** - Extract high-conversion keywords
+| 模块代号 | 核心能力 | 技术亮点 |
+| :--- | :--- | :--- |
+| **`SYS.01 // MULTI-LLM`** | **多核大模型中枢** | 原生支持 **Gemini 3.8**、**OpenAI**、**DeepSeek**、**通义千问 (Qwen)**、**智谱 GLM**，支持侧边栏在线热切换模型与 API Key |
+| **`SYS.02 // DAG ENGINE`** | **5 阶段 DAG 并行推演** | 基于严格上下文依赖关系的 5 批次拓扑并发调度，确保前后逻辑严密衔接的同时提速 **30% ~ 50%** |
+| **`SYS.03 // LIVE INTEL`** | **双模市场情报检索** | 支持 **大模型知识库极速推演** 与 **Serper / DuckDuckGo 实时联网竞品抓取** 一键切换，国内无代理环境零阻塞 |
+| **`SYS.04 // HOT REFINE`** | **单模块记忆级精修与导出** | 支持针对任意单一商业章节追加修改指令（带多轮上下文记忆重演），内置历史商业档案库及 **Markdown / 路演级中文字体 PDF** 一键导出 |
 
-**Enhanced Capabilities:**
-- ⚡ **Parallel Execution** - Run independent agents simultaneously (30-50% faster)
-- 💰 **Token Cost Tracking** - Real-time monitoring of API usage and costs
-- 🔍 **Competitor Data** - Real web search integration for market analysis
-- 🛡️ **Error Degradation** - Graceful fallback when agents fail
-- 📄 **PDF Export** - Beautiful PDF generation with custom styling
-- 📊 **A/B Testing** - Prompt variant testing and optimization
-- 🧪 **Full Test Coverage** - 135+ tests with 87% coverage
+---
 
-### 📊 System Architecture
+## 📸 系统界面预览 (Screenshots)
+
+### 1. 商业决策驾驶舱 & 8-Agent 拓扑矩阵 (`Dashboard & Topology Matrix`)
+> 采用深空商业暗色网格（Cyber-Grid）与顶部实时遥测 HUD，集成快捷赛道灵感胶囊、商业边界约束配置、4 大核心引擎架构卡以及 8-Agent 实时状态矩阵：
+
+<div align="center">
+  <img src="./docs/screenshots/dashboard_overview.png" alt="BizGenesis 商业决策矩阵工作台" width="96%" style="border-radius: 12px; border: 1px solid rgba(56,189,248,0.25);" />
+</div>
+
+### 2. 全景商业推演报告 & 赛道评分看板 (`Executive Business Report`)
+> 自动将智能体输出结构化为高管简报卡片，高亮显示 **🎯 赛道推荐指数**、细分蓝海定位、受众画像与痛点分析，并支持在左侧「📂 商业档案库」随时调取历史方案：
+
+<div align="center">
+  <img src="./docs/screenshots/report_analysis.png" alt="BizGenesis 商业推演全景报告" width="96%" style="border-radius: 12px; border: 1px solid rgba(56,189,248,0.25);" />
+</div>
+
+### 3. 单模块记忆级精修 & 路演级交付物导出 (`Hot Refinement & PDF/MD Export`)
+> 内置赛博胶囊标签（`#Hashtag`）渲染、单章节独立追加指令重演面板，以及原生支持中文字体排版的路演级 PDF 与 Markdown 报告一键下载：
+
+<div align="center">
+  <img src="./docs/screenshots/export_and_refine.png" alt="BizGenesis 单模块精修与PDF导出" width="96%" style="border-radius: 12px; border: 1px solid rgba(56,189,248,0.25);" />
+</div>
+
+---
+
+## 🧩 8-Agent 虚拟商业团队矩阵
+
+| 节点编号 | 智能体角色 | 执行批次 | 上游依赖输入 | 核心交付物产出 |
+| :---: | :--- | :---: | :--- | :--- |
+| **NODE 01** | 🕵️ **市场研究** (`MarketResearcher`) | `BATCH 01` | 用户赛道想法 + 商业约束 + 联网情报 | 高潜细分蓝海定位、目标受众画像、核心痛点、赛道推荐指数 |
+| **NODE 02** | 📦 **产品定义** (`ProductManager`) | `BATCH 02` | `市场研究` | 产品命名、核心卖点 (USP)、差异化竞争壁垒、软硬件/服务定价策略 |
+| **NODE 03** | 💰 **商业模式** (`BusinessModeler`) | `BATCH 03` | `产品定义` | 多元收入来源、成本结构拆解、盈亏平衡点测算、B2C/B2B2C 变现路径 |
+| **NODE 04** | 🎨 **品牌设计** (`ChiefDesigner`) | `BATCH 03` | `产品定义` | 品牌理念主张、Logo 视觉规范、标准色彩体系、Midjourney 绘图 Prompt |
+| **NODE 05** | 📈 **财务规划** (`FinancePlanner`) | `BATCH 04` | `商业模式` | 启动资金预算表、月度固定成本、首年四季度现金流预测、关键财务指标 |
+| **NODE 06** | 🎬 **流量脚本** (`ContentStrategist`) | `BATCH 04` | `品牌设计` | 黄金前 3 秒钩子、抖音/TikTok 分镜带货脚本、转化 CTA、BGM 音效设计 |
+| **NODE 07** | ⚠️ **风险评估** (`RiskAnalyst`) | `BATCH 05` | `商业模式` + `财务规划` | 市场/竞争/供应链/财务/合规五维风险识别、应对策略与止损应急预案 |
+| **NODE 08** | 🔍 **SEO 策略** (`SEOExpert`) | `BATCH 05` | `流量脚本` | 高转化商业意图长尾词矩阵、热门标签 (`#Hashtag`)、搜索流量截流策略 |
+
+---
+
+## 🕸️ 5 阶段 DAG 并行推演架构
+
+系统通过 [`AgentParallelExecutor`](src/utils/agent_parallel.py) 自动解析智能体之间的上下文依赖图（DAG），在保障下游 Agent 完整获取上游推演结论的前提下，分 **5 个阶段（Batch 01 ~ Batch 05）** 进行并发调度：
 
 ```mermaid
 flowchart LR
-    A[Input: Idea] --> B[Market Researcher]
-    B --> C[Product Manager]
-    C --> D[Business Modeler]
-    D --> E[Finance Planner]
-    E --> F[Risk Analyst]
-    F --> G[Chief Designer]
-    G --> H[Content Strategist]
-    H --> I[SEO Expert]
-    I --> J[Output: Business Plan]
-```
+    Input(["🎯 创业想法 & 边界约束<br/>(资金规模 / 目标市场 / 团队基因)"]) --> B1_M
 
-### 🛠️ Quick Start
+    subgraph B1["BATCH 01 · 赛道锚定"]
+        B1_M["🕵️ NODE 01: 市场研究<br/>MarketResearcher"]
+    end
 
-```bash
-# 1. Clone & Setup
-git clone https://github.com/reedtang666/BizGenesis.git
-cd BizGenesis
+    subgraph B2["BATCH 02 · 产品建模"]
+        B2_P["📦 NODE 02: 产品定义<br/>ProductManager"]
+    end
 
-# 2. Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
+    subgraph B3["BATCH 03 · 商业与品牌并发"]
+        B3_B["💰 NODE 03: 商业模式<br/>BusinessModeler"]
+        B3_D["🎨 NODE 04: 品牌设计<br/>ChiefDesigner"]
+    end
 
-# 3. Install dependencies
-pip install -r requirements.txt
+    subgraph B4["BATCH 04 · 财务与增长并发"]
+        B4_F["📈 NODE 05: 财务规划<br/>FinancePlanner"]
+        B4_C["🎬 NODE 06: 流量脚本<br/>ContentStrategist"]
+    end
 
-# 4. Configure .env
-cp .env.example .env
-# Edit .env with your API keys
+    subgraph B5["BATCH 05 · 风控与SEO并发"]
+        B5_R["⚠️ NODE 07: 风险评估<br/>RiskAnalyst"]
+        B5_S["🔍 NODE 08: SEO 策略<br/>SEOExpert"]
+    end
 
-# 5. Run CLI
-python -m src.main
+    B1_M --> B2_P
+    B2_P --> B3_B
+    B2_P --> B3_D
+    B3_B --> B4_F
+    B3_D --> B4_C
+    B3_B & B4_F --> B5_R
+    B4_C --> B5_S
 
-# 6. Or run Web UI
-streamlit run src/ui/app.py
-```
-
-### 🔑 Configuration
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `LLM_PROVIDER` | No | Provider: `openai`, `gemini`, `qwen`, `zhipu`, `deepseek` |
-| `GEMINI_API_KEY` | If using Gemini | Google Gemini API Key |
-| `QWEN_API_KEY` | If using Qwen | Qwen API Key |
-| `ZHIPU_API_KEY` | If using GLM | Zhipu AI API Key |
-| `OPENAI_API_KEY` | If using OpenAI | OpenAI API Key |
-| `SERPER_API_KEY` | No | Serper.dev API for better search (optional) |
-| `TOKEN_MONTHLY_BUDGET` | No | Monthly token budget limit (optional) |
-
-### 🌐 Web UI
-
-Modern, responsive web interface with:
-- ⚡ Toggle parallel execution
-- 💰 Real-time token usage display
-- 📊 Progress tracking for each agent
-- 📄 One-click PDF export
-
-```bash
-streamlit run src/ui/app.py
-```
-
-### 🐳 Docker
-
-```bash
-docker-compose up --build
+    B5_R & B5_S --> Output(["📄 商业推演全景报告<br/>Markdown 归档 & 路演级 PDF"])
 ```
 
 ---
 
-<a name="中文"></a>
-## 中文
+## 🛠️ 快速开始
 
-### 📖 项目简介
-
-BizGenesis 是一个 AI 驱动的创业辅助系统，将你的创业想法转化为完整的商业方案。8 个 AI Agent 智能协作，提供专业的市场分析、产品规划、商业模式设计等服务，支持并行执行、成本监控和美观的导出功能。
-
-### ✨ 功能特性
-
-**核心 AI 团队（8 个 Agent）：**
-- 🕵️ **市场研究员** - 结合真实竞品数据的市场分析
-- 📦 **产品经理** - 打造差异化产品概念
-- 💰 **商业模式** - 设计变现策略和定价方案
-- 📈 **财务规划** - 启动资金预算和现金流预测
-- ⚠️ **风险评估** - 识别威胁和应对策略
-- 🎨 **首席设计师** - 生成 Logo 概念和 Midjourney Prompt
-- 🎬 **流量操盘手** - 写 TikTok/抖音爆款带货脚本
-- 🔍 **SEO 专家** - 挖掘高转化长尾关键词
-
-**增强功能：**
-- ⚡ **并行执行** - 智能识别可并行任务，执行速度提升 30-50%
-- 💰 **Token 成本监控** - 实时追踪 API 调用消耗和费用
-- 🔍 **竞品数据接入** - 真实网络搜索获取竞品信息
-- 🛡️ **错误降级** - Agent 失败时自动使用默认响应，流程不中断
-- 📄 **PDF 导出** - 美观的 PDF 生成，支持自定义样式
-- 📊 **Prompt A/B 测试** - 多版本 Prompt 测试和优化
-- 🧪 **完整测试覆盖** - 135+ 单元测试，87% 代码覆盖率
-
-### 📊 系统流程图
-
-```mermaid
-flowchart TB
-    subgraph Input["📥 用户输入"]
-        A[创业想法/关键词]
-    end
-    
-    subgraph AI_Team["🤖 AI 虚拟团队"]
-        B[🕵️ 市场研究员]
-        C[📦 产品经理]
-        D[💰 商业模式]
-        E[📈 财务规划]
-        F[⚠️ 风险评估]
-        G[🎨 首席设计师]
-        H[🎬 流量操盘手]
-        I[🔍 SEO 专家]
-    end
-    
-    subgraph Output["📄 输出方案"]
-        J[📊 市场定位]
-        K[📦 产品方案]
-        L[💰 商业模式]
-        M[📈 财务规划]
-        N[⚠️ 风险评估]
-        O[🎨 品牌设计]
-        P[🎬 营销脚本]
-        Q[🔍 SEO策略]
-    end
-    
-    A --> B --> C --> D --> E --> F --> G --> H --> I
-    B --> J
-    C --> K
-    D --> L
-    E --> M
-    F --> N
-    G --> O
-    H --> P
-    I --> Q
-```
-
-### 🔄 并行执行优化
-
-系统智能识别无依赖的 Agent，实现并行执行：
-
-```
-批次 1: [市场研究 + 品牌设计 + SEO]     ← 并行执行
-批次 2: [产品定义]                      ← 依赖批次 1
-批次 3: [商业模式]                      ← 依赖批次 2  
-批次 4: [财务规划 + 流量脚本]           ← 并行执行
-批次 5: [风险评估]                      ← 依赖批次 3+4
-```
-
-**性能提升：** 启用并行执行后，总耗时从 ~8-10 分钟缩短至 ~5-6 分钟（提升 30-50%）
-
-### 🛠️ 快速开始
+### 1. 环境准备与安装
 
 ```bash
-# 1. 克隆项目
+# 1. 克隆仓库
 git clone https://github.com/reedtang666/BizGenesis.git
 cd BizGenesis
 
-# 2. 创建虚拟环境
+# 2. 创建并激活虚拟环境
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
 # 3. 安装依赖
 pip install -r requirements.txt
 
-# 4. 配置 .env
+# 4. 配置环境变量
 cp .env.example .env
-# 编辑 .env 填入你的 API Key
-
-# 5. 运行 CLI
-python -m src.main
-
-# 6. 或运行 Web UI
-streamlit run src/ui/app.py
+# 编辑 .env 填入你的大模型 API Key（也支持在 Web UI 侧边栏直接输入临时 API Key）
 ```
 
-### 🔑 配置说明
+### 2. 启动方式
 
-| 变量 | 必填 | 说明 |
-|------|------|------|
-| `LLM_PROVIDER` | 否 | 模型提供商: `openai`, `gemini`, `qwen`, `zhipu`, `deepseek` |
-| `GEMINI_API_KEY` | 用 Gemini 时 | Google Gemini API Key |
-| `QWEN_API_KEY` | 用千问时 | 千问百炼 API Key |
-| `ZHIPU_API_KEY` | 用智谱时 | 智谱 AI API Key |
-| `OPENAI_API_KEY` | 用 OpenAI 时 | OpenAI API Key |
-| `SERPER_API_KEY` | 否 | Serper.dev 搜索 API（可选，提升搜索质量） |
-| `TOKEN_MONTHLY_BUDGET` | 否 | Token 月度预算上限（可选） |
-
-### 🌐 Web UI
-
-现代化响应式界面，包含：
-- ⚡ 并行执行开关
-- 💰 实时 Token 使用统计
-- 📊 每个 Agent 的执行进度
-- 📄 一键 PDF 导出
-
+**方式一：启动现代化 Web 决策驾驶舱（推荐 🌟）**
 ```bash
 streamlit run src/ui/app.py
 ```
+启动后浏览器将自动打开 `http://localhost:8501`。
 
-界面预览：
-- 渐变背景设计
-- 功能特性展示卡片
-- 执行流程可视化
-- 结果标签页展示
+**方式二：命令行交互模式 (CLI)**
+```bash
+python -m src.main
+```
 
-### 🐳 Docker 部署
-
+**方式三：Docker 容器化一键部署**
 ```bash
 docker-compose up --build
 ```
 
-### 📁 项目结构
+---
 
-```
+## 🔑 环境变量与配置说明
+
+在根目录 `.env` 文件中配置（或在 Web 界面左侧「⚙️ 核心引擎中枢」实时切换）：
+
+| 环境变量 | 必填 | 默认值 / 示例 | 说明 |
+| :--- | :---: | :--- | :--- |
+| `LLM_PROVIDER` | 否 | `gemini` | 默认模型提供商：`gemini` / `openai` / `deepseek` / `qwen` / `zhipu` |
+| `GEMINI_API_KEY` | 按需 | `AIzaSy...` | Google Gemini API 密钥（默认推荐模型：`gemini-3.8-flash`） |
+| `OPENAI_API_KEY` | 按需 | `sk-...` | OpenAI API 密钥（默认推荐模型：`gpt-4o-mini`） |
+| `DEEPSEEK_API_KEY` | 按需 | `sk-...` | DeepSeek API 密钥（默认推荐模型：`deepseek-chat`） |
+| `QWEN_API_KEY` | 按需 | `sk-...` | 阿里通义千问百炼 API 密钥（默认推荐模型：`qwen-turbo`） |
+| `ZHIPU_API_KEY` | 按需 | `...` | 智谱清言 GLM API 密钥（默认推荐模型：`glm-4-flash`） |
+| `SERPER_API_KEY` | 否 | `...` | Serper.dev 谷歌搜索 API Key（可选，开启联网搜索时提供更精准竞品情报） |
+| `TOKEN_MONTHLY_BUDGET` | 否 | `1000000` | 月度 Token 算力预算上限（用于侧边栏成本进度条遥测） |
+
+---
+
+## 📁 项目目录结构
+
+```text
 BizGenesis/
+├── BizGenesis.png                  # 项目视觉海报
+├── docs/
+│   └── screenshots/                # Web UI 系统实机高清截图
+│       ├── dashboard_overview.png  # 商业决策矩阵主控台截图
+│       ├── report_analysis.png     # 商业推演全景报告截图
+│       └── export_and_refine.png   # 单模块精修与交付物导出截图
 ├── src/
-│   ├── main.py              # CLI 入口（支持并行执行）
-│   ├── config.py            # 配置管理
-│   ├── models.py            # Pydantic 模型
-│   ├── exceptions.py        # 共享异常类
-│   ├── agents/              # AI Agent
-│   │   ├── base.py          # 基类（集成 Token 监控、错误降级）
-│   │   ├── market.py        # 市场研究员（含竞品数据）
-│   │   ├── product.py       # 产品经理
-│   │   ├── business.py      # 商业模式
-│   │   ├── finance.py       # 财务规划
-│   │   ├── risk.py          # 风险评估
-│   │   ├── designer.py      # 首席设计
-│   │   ├── marketing.py     # 流量操盘手
-│   │   └── seo.py           # SEO 专家
-│   ├── utils/               # 工具模块 ⭐ 新增
-│   │   ├── token_monitor.py     # Token 成本监控
-│   │   ├── error_degradation.py # 错误降级处理
-│   │   ├── competitor_data.py   # 竞品数据收集
-│   │   ├── agent_parallel.py    # Agent 并行执行
-│   │   ├── pdf_export.py        # PDF 导出
-│   │   ├── json_output.py       # JSON 结构化输出
-│   │   └── prompt_ab_test.py    # Prompt A/B 测试
-│   ├── tools/               # 基础工具
-│   │   ├── search.py        # 搜索工具
-│   │   └── calculator.py
-│   └── ui/                  # Web UI ⭐ 全新设计
-│       └── app.py           # Streamlit 界面
-├── tests/                   # 测试套件 ⭐ 新增
-│   ├── conftest.py          # Pytest 配置
-│   ├── test_token_monitor.py
-│   ├── test_error_degradation.py
-│   ├── test_competitor_data.py
-│   ├── test_agent_parallel.py
-│   ├── test_pdf_export.py
-│   ├── test_json_output.py
-│   ├── test_prompt_ab_test.py
-│   └── test_base_agent_integration.py
-├── output/                  # 生成的方案文件
+│   ├── main.py                     # CLI 命令行入口（支持并行与串行推演）
+│   ├── config.py                   # 多模型与环境变量统一配置中心
+│   ├── models.py                   # Pydantic 结构化数据模型
+│   ├── exceptions.py               # 统一异常定义体系
+│   ├── agents/                     # 8 大核心职能 AI Agent
+│   │   ├── base.py                 # Agent 抽象基类（含 Token 监控、重试、错误降级、多轮精修）
+│   │   ├── market.py               # 🕵️ 市场研究员（双模联网检索 + 痛点洞察）
+│   │   ├── product.py              # 📦 产品经理（USP 提炼 + 差异化矩阵）
+│   │   ├── business.py             # 💰 商业模式架构师（盈利模型 + 盈亏平衡测算）
+│   │   ├── designer.py             # 🎨 首席设计师（品牌视觉 + Midjourney Prompt）
+│   │   ├── finance.py              # 📈 财务规划师（启动资金预算 + 首年现金流预测）
+│   │   ├── marketing.py            # 🎬 流量操盘手（抖音/TikTok 分镜脚本）
+│   │   ├── risk.py                 # ⚠️ 风险评估师（五维风控 + 应急预案）
+│   │   └── seo.py                  # 🔍 SEO 增长专家（高转化长尾词 + 热门标签）
+│   ├── utils/                      # 核心引擎与工程化工具包
+│   │   ├── agent_parallel.py       # ⚡ 5-Stage DAG 并行调度执行器
+│   │   ├── token_monitor.py        # 📊 算力与 API 成本实时遥测器
+│   │   ├── pdf_export.py           # 📄 中文字体自适应路演级 PDF 导出引擎
+│   │   ├── competitor_data.py      # 📡 实时竞品情报采集器
+│   │   ├── error_degradation.py    # 🛡️ 优雅降级与容错恢复模块
+│   │   ├── json_output.py          # 🧱 JSON 结构化解析器
+│   │   └── prompt_ab_test.py       # 🧪 Prompt A/B 实验评估框架
+│   ├── tools/                      # Agent 外部工具集（搜索、财务计算器）
+│   └── ui/
+│       └── app.py                  # 🌐 Streamlit 商业决策矩阵 Web 界面 (V2.5)
+├── tests/                          # 135+ 单元测试套件（87%+ 覆盖率）
+├── output/                         # 自动归档的历史商业方案 (.md)
 ├── requirements.txt
-├── pytest.ini               # Pytest 配置
 ├── Dockerfile
 └── docker-compose.yml
 ```
 
-### 🛡️ 技术栈
+---
 
-**核心框架：**
-- **LangChain** - LLM 编排框架
-- **Streamlit** - Web UI（现代化响应式设计）
-- **Pydantic** - 数据验证
-- **Loguru** - 日志系统
-- **Tenacity** - 重试机制
+## 🧪 自动化测试与质量保障
 
-**新增依赖：**
-- **reportlab** - PDF 生成
-- **pytest** + **pytest-cov** - 测试框架和覆盖率
-- **duckduckgo-search** - 网络搜索
-
-### 🧪 测试
-
-项目包含完整的测试套件，覆盖率 87%：
+项目内置 **135+ 单元测试用例**，核心工具模块覆盖率达 **87%+**：
 
 ```bash
-# 运行所有测试
-python -m pytest tests/ -v
+# 运行全部测试套件
+./venv/bin/python -m pytest tests/ -v
 
-# 运行测试并查看覆盖率
-python -m pytest tests/ --cov=src/utils --cov-report=term
-
-# 运行特定测试文件
-python -m pytest tests/test_token_monitor.py -v
+# 运行测试并输出代码覆盖率报告
+./venv/bin/python -m pytest tests/ --cov=src/utils --cov-report=term
 ```
-
-**测试统计：**
-- 135+ 测试用例
-- 87% 代码覆盖率
-- 所有核心功能均有单元测试覆盖
-
-### 📊 Token 成本监控
-
-系统实时追踪每个 Agent 的 Token 消耗：
-
-```python
-# 配置月度预算（可选）
-TOKEN_MONTHLY_BUDGET=1000000
-
-# 查看使用统计
-monitor = get_token_monitor()
-summary = monitor.get_usage_summary()
-# {
-#     "total_tokens": 15000,
-#     "total_cost": 0.15,
-#     "by_agent": {...},
-#     "budget": {"limit": 1000000, "remaining": 998500}
-# }
-```
-
-### 📄 导出格式
-
-支持两种导出格式：
-
-1. **Markdown** - 保留原始格式，便于编辑
-2. **PDF** - 美观排版，适合分享和打印
-
-### 📄 License
-
-MIT License
 
 ---
 
-## ⭐ Star History
+<a name="english-documentation"></a>
 
-如果这个项目对你有帮助，请给个 Star ⭐
+## 🇺🇸 English Documentation
 
-## 📝 Changelog
+### 📖 Overview
 
-### v2.0.0 (2024-04)
-- ✅ 新增并行执行功能，性能提升 30-50%
-- ✅ 新增 Token 成本监控和预算管理
-- ✅ 新增竞品数据自动收集
-- ✅ 新增错误降级机制
-- ✅ 新增 PDF 导出功能
-- ✅ 新增 Prompt A/B 测试框架
-- ✅ 新增 JSON 结构化输出
-- ✅ 全新设计的 Web UI
-- ✅ 135+ 单元测试，87% 覆盖率
+**BizGenesis** is an AI-powered **Autonomous Venture Intelligence OS** that transforms raw startup ideas into investor-ready business plans. Powered by an **8-Agent virtual executive team** and a **5-Stage DAG Parallel Execution Engine**, BizGenesis delivers end-to-end venture analysis—from market positioning and product definition to financial projections, viral video scripts, and SEO growth strategies.
+
+### ✨ Key Highlights
+
+- 🤖 **8 Specialized AI Agents**: Market Researcher, Product Manager, Business Modeler, Chief Designer, Finance Planner, Content Strategist, Risk Analyst, and SEO Expert.
+- ⚡ **5-Stage DAG Parallel Execution**: Automatically resolves upstream/downstream context dependencies across 5 execution batches, boosting speed by **30%–50%**.
+- 🌐 **Multi-LLM Neural Hub**: Native support for **Google Gemini (`gemini-3.8-flash`)**, **OpenAI (`gpt-4o-mini`)**, **DeepSeek (`deepseek-chat`)**, **Alibaba Qwen**, and **Zhipu GLM**, with live hot-swapping in the sidebar.
+- 🖥️ **Cyber-Grid Executive Web UI (V2.5)**: Real-time telemetry HUD, live streaming agent previews, interactive business constraint selectors, historical archive loader, single-section memory refinement, and 1-click **Markdown / Chinese-ready PDF** export.
+- 🛡️ **Production-Grade Reliability**: Built-in token cost telemetry, graceful error degradation, structured JSON parsing, and **135+ unit tests**.
+
+### 🚀 Quick Start
+
+```bash
+git clone https://github.com/reedtang666/BizGenesis.git
+cd BizGenesis
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+
+# Launch Web UI
+streamlit run src/ui/app.py
+```
+
+---
+
+## 📝 更新日志 (Changelog)
+
+### v2.5.0 (2026-10)
+- 🎨 **全新 Cyber-Grid 商业决策矩阵 UI**：新增顶部 4 联实时遥测 HUD、快捷赛道灵感胶囊、商业边界约束面板与 8-Agent 实时脉动拓扑矩阵
+- ⚡ **5 阶段 DAG 依赖拓扑升级**：重构 `AGENT_DEPENDENCIES`，严格按照「市场 → 产品 → 商业+设计 → 财务+脚本 → 风控+SEO」5 批次并发推演
+- 🔄 **单模块记忆级精修 & 商业档案库**：支持对任意章节追加修改指令单独重演，支持一键调取 `output/` 历史归档报告
+- 📡 **双模市场情报开关**：新增「外部联网搜索」独立开关，默认使用大模型知识库极速推演，彻底解决国内无代理环境下网络搜索卡顿问题
+- 📄 **路演级中文字体 PDF 导出**：自动匹配 macOS / Windows / Linux 系统级中文字体，支持 Markdown 富文本符号清洗与水印排版
+
+### v2.0.0
+- ✅ 新增并行执行器、Token 成本监控、错误降级机制、Prompt A/B 测试框架及 135+ 单元测试套件
+
+---
+
+## 📄 License
+
+本项目基于 [MIT License](./LICENSE) 开源。如果这个项目对你有帮助，欢迎点亮一颗 **Star ⭐**！
