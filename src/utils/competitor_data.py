@@ -1,10 +1,17 @@
 """Competitor data collection and integration."""
+import re
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from loguru import logger
 
 from src.tools.search import WebSearchTool
+
+
+def _has_chinese(text: str) -> bool:
+    """Check if text contains Chinese characters."""
+    return bool(re.search(r"[\u4e00-\u9fff]", text or ""))
 
 
 @dataclass
@@ -57,7 +64,10 @@ class CompetitorDataCollector:
         Returns:
             List of search results
         """
-        query = f"top {industry} companies competitors market leaders"
+        if _has_chinese(industry):
+            query = f"{industry} 头部品牌 竞品 公司 市场排名"
+        else:
+            query = f"top {industry} companies competitors market leaders"
         logger.info(f"Searching for competitors: {query}")
 
         try:
@@ -150,7 +160,11 @@ class CompetitorDataCollector:
         Returns:
             List of trend results
         """
-        query = f"{industry} market trends 2024 2025"
+        current_year = datetime.now().year
+        if _has_chinese(industry):
+            query = f"{industry} 行业市场趋势 发展前景 {current_year}"
+        else:
+            query = f"{industry} market trends {current_year}"
         logger.info(f"Searching for trends: {query}")
 
         try:
@@ -189,7 +203,10 @@ class CompetitorDataCollector:
         Returns:
             List of keyword results
         """
-        query = f"{industry} popular keywords SEO trends"
+        if _has_chinese(industry):
+            query = f"{industry} 热门搜索词 长尾关键词 痛点"
+        else:
+            query = f"{industry} popular keywords SEO trends"
         logger.info(f"Searching for keywords: {query}")
 
         try:

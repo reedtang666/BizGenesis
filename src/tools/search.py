@@ -1,5 +1,7 @@
 """Web search tools for market research."""
+from datetime import datetime
 import json
+import re
 from typing import Dict, Any, List, Optional
 from loguru import logger
 
@@ -76,7 +78,7 @@ class WebSearchTool(BaseTool):
         from duckduckgo_search import DDGS
         
         results = []
-        with DDGS() as ddgs:
+        with DDGS(timeout=5) as ddgs:
             for r in ddgs.text(query, max_results=num_results):
                 results.append({
                     "title": r.get("title", ""),
@@ -111,12 +113,22 @@ class MarketSearchTool(BaseTool):
         Returns:
             Aggregated market research results
         """
-        queries = {
-            "trends": f"{industry} market trends 2024",
-            "competitors": f"top {industry} brands competitors",
-            "keywords": f"{industry} popular keywords SEO",
-            "pain_points": f"{industry} customer problems pain points"
-        }
+        year = datetime.now().year
+        is_zh = bool(re.search(r"[\u4e00-\u9fff]", industry or ""))
+        if is_zh:
+            queries = {
+                "trends": f"{industry} 市场趋势 {year}",
+                "competitors": f"{industry} 头部品牌 竞品分析",
+                "keywords": f"{industry} 热门关键词 SEO",
+                "pain_points": f"{industry} 用户痛点 差评 需求"
+            }
+        else:
+            queries = {
+                "trends": f"{industry} market trends {year}",
+                "competitors": f"top {industry} brands competitors",
+                "keywords": f"{industry} popular keywords SEO",
+                "pain_points": f"{industry} customer problems pain points"
+            }
         
         query = queries.get(search_type, queries["trends"])
         return self._search.run(query)

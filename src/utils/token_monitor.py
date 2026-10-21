@@ -1,4 +1,6 @@
 """Token monitoring and budget management."""
+import os
+import threading
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 from loguru import logger
@@ -29,6 +31,7 @@ class TokenMonitor:
         self.total_tokens: int = 0
         self.total_cost: float = 0.0
         self._warning_threshold: float = 0.8  # 80% of budget
+        self._lock = threading.Lock()
 
     def record_usage(self, agent_name: str, tokens: int, cost: float) -> None:
         """
@@ -39,28 +42,32 @@ class TokenMonitor:
             tokens: Number of tokens used
             cost: Cost in USD
         """
-        # Update totals
-        self.total_tokens += tokens
-        self.total_cost += cost
+        with self._lock:
+            # Update totals
+            self.total_tokens += tokens
+            self.total_cost += cost
 
-        # Update per-agent usage
-        if agent_name in self._usage_by_agent:
-            existing = self._usage_by_agent[agent_name]
-            self._usage_by_agent[agent_name] = TokenUsage(
-                agent_name=agent_name,
-                tokens=existing.tokens + tokens,
-                cost=existing.cost + cost
-            )
-        else:
-            self._usage_by_agent[agent_name] = TokenUsage(
-                agent_name=agent_name,
-                tokens=tokens,
-                cost=cost
-            )
+            # Update per-agent usage
+            if agent_name in self._usage_by_agent:
+                existing = self._usage_by_agent[agent_name]
+                self._usage_by_agent[agent_name] = TokenUsage(
+                    agent_name=agent_name,
+                    tokens=existing.tokens + tokens,
+                    cost=existing.cost + cost
+                )
+            else:
+                self._usage_by_agent[agent_name] = TokenUsage(
+                    agent_name=agent_name,
+                    tokens=tokens,
+                    cost=cost
+                )
+
+            total_tokens = self.total_tokens
+            total_cost = self.total_cost
 
         logger.debug(
             f"Recorded {tokens} tokens for {agent_name}: "
-            f"total={self.total_tokens}, cost=${self.total_cost:.4f}"
+            f"total={total_tokens}, cost=${total_cost:.4f}"
         )
 
     def get_usage_by_agent(self) -> Dict[str, TokenUsage]:
@@ -141,7 +148,9 @@ def get_token_monitor() -> TokenMonitor:
     """Get the global token monitor instance."""
     global _global_monitor
     if _global_monitor is None:
-        _global_monitor = TokenMonitor()
+        env_budget = os.getenv("TOKEN_MONTHLY_BUDGET")
+        budget = int(env_budget) if env_budget and env_budget.isdigit() else None
+        _global_monitor = TokenMonitor(monthly_budget=budget)
     return _global_monitor
 
 

@@ -1,4 +1,5 @@
 """Base agent class with logging, retry, error degradation, and token monitoring."""
+import asyncio
 import time
 from abc import ABC, abstractmethod
 from typing import Dict, Any, List, Optional
@@ -58,6 +59,7 @@ class BaseAgent(ABC):
         )
         self._use_memory = use_memory
         self._conversation_history: List[Dict[str, str]] = []
+        self._active_constraints: str = ""
         self._setup_logger()
 
         # Token monitoring
@@ -72,7 +74,9 @@ class BaseAgent(ABC):
         # Competitor data
         self._enable_competitor_data = enable_competitor_data
         if enable_competitor_data:
-            self._competitor_collector = get_competitor_collector()
+            self._competitor_collector = get_competitor_collector(
+                search_api_key=Config.SERPER_API_KEY
+            )
 
     def _setup_logger(self) -> None:
         """Configure logger for this agent."""
@@ -119,6 +123,9 @@ class BaseAgent(ABC):
             if memory_context:
                 prompt = f"Previous context:\n{memory_context}\n\nCurrent request:\n{prompt}"
 
+            if self._active_constraints:
+                prompt = f"{prompt}\n\n{self._active_constraints}"
+
             response = self.llm.invoke(prompt)
             elapsed = time.time() - start_time
             logger.info(f"{self.name} completed in {elapsed:.2f}s")
@@ -130,8 +137,15 @@ class BaseAgent(ABC):
                     usage = getattr(response, 'usage_metadata', None)
                     if usage:
                         tokens = usage.get('total_tokens', 0)
-                        # Estimate cost (roughly $0.01 per 1K tokens for GPT-4)
-                        cost = tokens * 0.00001
+                        model_name = getattr(self.llm, 'model_name', '') or ''
+                        model_lower = str(model_name).lower()
+                        if any(k in model_lower for k in ('flash', 'mini', 'turbo', 'deepseek')):
+                            rate_per_token = 0.0000003  # ~$0.30 / 1M tokens
+                        elif 'pro' in model_lower or 'gpt-4' in model_lower:
+                            rate_per_token = 0.000003   # ~$3.00 / 1M tokens
+                        else:
+                            rate_per_token = 0.000001   # ~$1.00 / 1M tokens
+                        cost = tokens * rate_per_token
                         self._token_monitor.record_usage(self.name, tokens, cost)
                 except Exception as e:
                     logger.debug(f"Could not track token usage: {e}")
@@ -141,6 +155,22 @@ class BaseAgent(ABC):
             elapsed = time.time() - start_time
             logger.error(f"{self.name} failed after {elapsed:.2f}s: {e}")
             raise LLMError(f"LLM call failed: {e}") from e
+
+    @staticmethod
+    def format_startup_constraints(context: Dict[str, Any]) -> str:
+        """Build startup constraint prompt block from context."""
+        parts = []
+        if context.get("budget_scale") and context["budget_scale"] != "不限":
+            parts.append(f"- 启动资金规模: {context['budget_scale']}")
+        if context.get("target_market") and context["target_market"] != "不限":
+            parts.append(f"- 目标市场区域: {context['target_market']}")
+        if context.get("team_type") and context["team_type"] != "不限":
+            parts.append(f"- 团队形态: {context['team_type']}")
+        if context.get("extra_requirements"):
+            parts.append(f"- 补充要求: {context['extra_requirements']}")
+        if not parts:
+            return ""
+        return "【创业背景与约束条件（请在分析时严格贴合以下实际情况）】\n" + "\n".join(parts)
 
     def run_with_degradation(
         self,
@@ -157,6 +187,8 @@ class BaseAgent(ABC):
         Returns:
             Context with agent result or fallback
         """
+        self._active_constraints = self.format_startup_constraints(context)
+
         def run_agent():
             return self.run(context)
 
@@ -228,3 +260,45 @@ class BaseAgent(ABC):
     def run(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """Execute agent task with context."""
         pass
+
+    def refine(
+        self,
+        context: Dict[str, Any],
+        feedback: str,
+        output_key: str
+    ) -> Dict[str, Any]:
+        """
+        Refine a previously generated section based on user feedback.
+
+        Args:
+            context: Current execution context
+            feedback: User's modification instructions
+            output_key: Key in context to update
+
+        Returns:
+            Updated context
+        """
+        industry = context.get("industry", "")
+        previous_output = context.get(output_key, "")
+        self._active_constraints = self.format_startup_constraints(context)
+
+        if previous_output:
+            self.add_to_memory(f"生成【{industry}】方案", previous_output)
+
+        refine_prompt = f"""你刚才为【{industry}】创业项目生成了以下方案内容：
+
+{previous_output}
+
+用户提出了以下修改/追问要求：
+【{feedback}】
+
+请在保留原有专业结构的基础上，根据用户的要求针对性地重新优化并输出完整的新版方案内容："""
+
+        updated = self._call_llm(refine_prompt)
+        self.add_to_memory(feedback, updated)
+        context[output_key] = updated
+        return context
+
+    async def run_async(self, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute agent task asynchronously in a worker thread."""
+        return await asyncio.to_thread(self.run, context)

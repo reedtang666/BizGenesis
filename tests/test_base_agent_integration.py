@@ -202,3 +202,76 @@ class TestAgentConfig:
         agent = TestAgent(enable_token_tracking=True)
 
         assert agent._enable_token_tracking is True
+
+    def test_gemini_provider_config(self, monkeypatch):
+        """Test Config supports Google Gemini provider."""
+        from src.config import Config
+
+        monkeypatch.setattr(Config, "LLM_PROVIDER", "gemini")
+        monkeypatch.setattr(Config, "GEMINI_API_KEY", "test-gemini-key")
+        monkeypatch.setattr(Config, "GEMINI_MODEL", "gemini-3.8-flash")
+
+        llm_cfg = Config.get_llm_config()
+        assert llm_cfg["api_key"] == "test-gemini-key"
+        assert llm_cfg["model"] == "gemini-3.8-flash"
+        assert "generativelanguage.googleapis.com" in llm_cfg["base_url"]
+        Config.validate()
+
+    @patch('src.agents.base.ChatOpenAI')
+    def test_agent_startup_constraints_and_refine(self, mock_chat):
+        """Test startup constraint formatting and single-section refine."""
+        mock_instance = MagicMock()
+        mock_instance.invoke.return_value = MagicMock(content="Refined section output")
+        mock_chat.return_value = mock_instance
+
+        class TestAgent(BaseAgent):
+            @property
+            def name(self) -> str:
+                return "TestAgent"
+
+            def run(self, context):
+                context["test_key"] = "Initial output"
+                return context
+
+        agent = TestAgent(use_memory=True)
+        ctx = {
+            "industry": "猫粮",
+            "budget_scale": "< 5万元（个人/副业轻资产）",
+            "target_market": "国内市场（抖音/小红书/天猫/微信私域）",
+            "team_type": "一人公司 / 独立创客",
+            "extra_requirements": "主打冻干生骨肉",
+            "test_key": "Initial output",
+        }
+        constraint_str = BaseAgent.format_startup_constraints(ctx)
+        assert "启动资金规模" in constraint_str
+        assert "主打冻干生骨肉" in constraint_str
+
+        updated_ctx = agent.refine(ctx, "请把客单价调整到99元以内", "test_key")
+        assert updated_ctx["test_key"] == "Refined section output"
+        assert len(agent._conversation_history) >= 2
+
+    def test_parse_markdown_report(self):
+        """Test parsing historical markdown report into context."""
+        from src.ui.app import parse_markdown_report
+
+        sample_md = """# 🚀 创业方案: 智能猫砂盆
+
+生成时间: 2026-10-21 10:00:00
+
+---
+
+## 📊 市场定位
+
+细分领域名称: 静音杀菌猫砂盆
+
+---
+
+## 📦 产品定义
+
+产品名称: 净喵Pro
+"""
+        parsed = parse_markdown_report(sample_md)
+        assert parsed["industry"] == "智能猫砂盆"
+        assert "静音杀菌猫砂盆" in parsed["market_analysis"]
+        assert "净喵Pro" in parsed["product_plan"]
+

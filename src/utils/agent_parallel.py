@@ -11,18 +11,18 @@ from loguru import logger
 # Agent dependency map: which agents depend on which
 # Format: {agent_name: [dependencies]}
 AGENT_DEPENDENCIES = {
-    "MarketResearcher": [],  # No dependencies - can run first
+    "MarketResearcher": [],  # No dependencies - runs first
     "ProductManager": ["MarketResearcher"],  # Depends on market analysis
     "BusinessModeler": ["ProductManager"],  # Depends on product concept
+    "ChiefDesigner": ["ProductManager"],  # Depends on product concept (runs in parallel with BusinessModeler)
     "FinancePlanner": ["BusinessModeler"],  # Depends on business model
+    "ContentStrategist": ["ChiefDesigner"],  # Depends on brand design (runs in parallel with FinancePlanner)
     "RiskAnalyst": ["BusinessModeler", "FinancePlanner"],  # Depends on both
-    "ChiefDesigner": [],  # No dependencies - can run in parallel with market
-    "ContentStrategist": ["ChiefDesigner"],  # Depends on design
-    "SEOExpert": [],  # No dependencies - can run in parallel
+    "SEOExpert": ["ContentStrategist"],  # Depends on marketing script (runs in parallel with RiskAnalyst)
 }
 
 
-# Independent agents that can run in parallel
+# Independent agents when evaluated without upstream dependencies
 INDEPENDENT_AGENTS = ["MarketResearcher", "ChiefDesigner", "SEOExpert"]
 
 
@@ -99,6 +99,8 @@ class AgentParallelExecutor:
         start_time = datetime.now()
 
         try:
+            if hasattr(agent, "format_startup_constraints"):
+                agent._active_constraints = agent.format_startup_constraints(context)
             result_context = agent.run(context)
             duration = (datetime.now() - start_time).total_seconds()
 
@@ -272,7 +274,7 @@ class AgentParallelExecutor:
 
     def identify_independent_agents(self, agent_names: List[str]) -> List[str]:
         """
-        Identify agents that have no dependencies and can run in parallel.
+        Identify agents that have no dependencies (within the given agent set) and can run in parallel.
 
         Args:
             agent_names: List of agent names
@@ -280,9 +282,10 @@ class AgentParallelExecutor:
         Returns:
             List of agent names that can run in parallel
         """
+        agent_set = set(agent_names)
         independent = []
         for name in agent_names:
-            deps = AGENT_DEPENDENCIES.get(name, [])
+            deps = [d for d in AGENT_DEPENDENCIES.get(name, []) if d in agent_set]
             if not deps:
                 independent.append(name)
 
@@ -321,15 +324,16 @@ class AgentParallelExecutor:
         """
         batches = []
         completed = set()
+        agent_set = set(agent_names)
 
         while len(completed) < len(agent_names):
-            # Find agents whose dependencies are satisfied
+            # Find agents whose dependencies (present in agent_names) are satisfied
             current_batch = []
             for name in agent_names:
                 if name in completed:
                     continue
 
-                deps = AGENT_DEPENDENCIES.get(name, [])
+                deps = [d for d in AGENT_DEPENDENCIES.get(name, []) if d in agent_set]
                 if all(d in completed for d in deps):
                     current_batch.append(name)
 

@@ -76,7 +76,8 @@ streamlit run src/ui/app.py
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `LLM_PROVIDER` | No | Provider: `openai`, `qwen`, `zhipu`, `deepseek` |
+| `LLM_PROVIDER` | No | Provider: `openai`, `gemini`, `qwen`, `zhipu`, `deepseek` |
+| `GEMINI_API_KEY` | If using Gemini | Google Gemini API Key |
 | `QWEN_API_KEY` | If using Qwen | Qwen API Key |
 | `ZHIPU_API_KEY` | If using GLM | Zhipu AI API Key |
 | `OPENAI_API_KEY` | If using OpenAI | OpenAI API Key |
@@ -215,7 +216,8 @@ streamlit run src/ui/app.py
 
 | 变量 | 必填 | 说明 |
 |------|------|------|
-| `LLM_PROVIDER` | 否 | 模型提供商: `openai`, `qwen`, `zhipu`, `deepseek` |
+| `LLM_PROVIDER` | 否 | 模型提供商: `openai`, `gemini`, `qwen`, `zhipu`, `deepseek` |
+| `GEMINI_API_KEY` | 用 Gemini 时 | Google Gemini API Key |
 | `QWEN_API_KEY` | 用千问时 | 千问百炼 API Key |
 | `ZHIPU_API_KEY` | 用智谱时 | 智谱 AI API Key |
 | `OPENAI_API_KEY` | 用 OpenAI 时 | OpenAI API Key |

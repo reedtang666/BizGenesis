@@ -30,8 +30,9 @@ class MarketResearcher(BaseAgent):
         industry = context.get("industry", "")
         logger.info(f"Analyzing {industry} market...")
 
-        # Collect competitor data if enabled
-        if self._enable_competitor_data:
+        # Collect competitor data if enabled in agent and not disabled in context
+        should_search = self._enable_competitor_data and context.get("enable_web_search", True)
+        if should_search:
             logger.info(f"Collecting competitor data for {industry}")
             try:
                 competitor_context = self._collect_competitor_data(industry)

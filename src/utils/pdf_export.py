@@ -32,6 +32,7 @@ except ImportError:
 @dataclass
 class PDFExportConfig:
     page_size: str = "A4"
+    font_family: str = "Helvetica"
     font_size: int = 12
     title_font_size: int = 20
     heading_font_size: int = 16
@@ -141,11 +142,30 @@ class PDFExporter:
         return "\n".join(lines).encode("utf-8")
 
     def _clean_content(self, content: str) -> str:
-        content = re.sub(r'\s+', ' ', content)
         content = content.replace('&', '&amp;')
         content = content.replace('<', '&lt;')
         content = content.replace('>', '&gt;')
+        content = content.replace('\r\n', '\n').replace('\r', '\n')
+        content = re.sub(r'[ \t]+', ' ', content)
+        content = content.replace('\n', '<br/>')
         return content
+
+    def _generate_filename(self, industry: str) -> str:
+        """Generate safe PDF filename from industry."""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_industry = re.sub(r'[^\w\-]', '_', industry.lower()).strip('_')[:20] or "plan"
+        return f"{safe_industry}_{timestamp}.pdf"
+
+    def _format_section(self, section_key: str, content: str) -> str:
+        """Format a single section with its title."""
+        title = self.SECTION_TITLES.get(section_key, section_key)
+        return f"## {title} ({section_key})\n\n{content}"
+
+    def _add_watermark(self, content: str) -> str:
+        """Add watermark text to content if enabled."""
+        if not self._config.include_watermark:
+            return content
+        return f"{content}\n\n--- {self._config.watermark_text} ---"
 
 
 _exporter: Optional[PDFExporter] = None
@@ -154,4 +174,6 @@ def get_pdf_exporter(config: Optional[PDFExportConfig] = None) -> PDFExporter:
     global _exporter
     if _exporter is None:
         _exporter = PDFExporter(config)
+    elif config is not None:
+        _exporter._config = config
     return _exporter

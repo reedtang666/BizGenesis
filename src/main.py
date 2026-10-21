@@ -272,7 +272,7 @@ def main():
                 agent_name = agent.__class__.__name__
                 progress.update(task, description=f"[cyan]正在执行: {agent_name}[/cyan]")
 
-                context = agent.run(context)
+                context = agent.run_with_degradation(context)
                 progress.advance(task)
                 time.sleep(0.3)
 
@@ -345,7 +345,13 @@ async def main_async():
     ]
 
     # Run with async support
-    context = await run_agents_parallel(agents, context)
+    executor = get_parallel_executor()
+    agent_names = [a.__class__.__name__ for a in agents]
+    batches = executor.get_parallelization_plan(agent_names)
+    for batch in batches:
+        batch_agents = [a for a in agents if a.__class__.__name__ in batch]
+        result = await executor.execute_parallel_async(batch_agents, context)
+        context = result.context
 
     # Display results (same as sync version)
     console.print("\n")
